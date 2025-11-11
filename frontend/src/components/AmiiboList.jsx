@@ -1,7 +1,7 @@
 import { Typography, Grid } from "@mui/material";
 import { useState } from "react";
 import { useAmiibo } from "../contexts/AmiiboContext";
-import Modal from "./Modal";
+import AmiiboModal from "./AmiiboModal";
 import Amiibo from "./Amiibo";
 
 export default function AmiiboList() {
@@ -32,7 +32,7 @@ export default function AmiiboList() {
         ))}
       </Grid>
 
-      <Modal open={open} onClose={handleClose} amiibo={selectedAmiibo} />
+      <AmiiboModal open={open} onClose={handleClose} amiibo={selectedAmiibo} />
     </>
   );
 }

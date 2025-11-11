@@ -1,5 +1,6 @@
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
+import AddIcon from '@mui/icons-material/Add';
 import "./App.css";
 import { useState } from "react";
 import { useAmiibo } from "./contexts/AmiiboContext";
@@ -23,9 +24,13 @@ function App() {
     searchAmiibos(searchValue);
   }
 
+  function onClickAddButton() {
+
+  }
+
   return (
     <main>
-      <img src="amibo-banner.png" alt="banner" />
+      <img src="amiibo-wiki/amibo-banner.png" alt="banner" />
       <div className="search-section">
         <div className="search-input">
           <TextField
@@ -50,8 +55,19 @@ function App() {
         >
           <SearchIcon fontSize="inherit" />
         </Button>
+
+        <Button
+          id="add-button"
+          variant="contained"
+          size="large"
+          style={{ padding: 0, height: 56, fontSize: 30 }}
+          onClick={onClickAddButton}
+          disableElevation
+        >
+          <AddIcon fontSize="inherit" />
+        </Button>
       </div>
-        <AmiiboList />
+      <AmiiboList />
     </main>
   );
 }

@@ -84,13 +84,13 @@ router.post('/login',
     const user = await User.findOne({ username });
     if (!user) {
       console.warn(`[LOGIN] Usuário não encontrado: ${username}`);
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Credenciais inválidas' });
     }
 
     const match = await bcrypt.compare(password, user.passwordHash);
     if (!match) {
       console.warn(`[LOGIN] Senha incorreta para usuário: ${username}`);
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Credenciais inválidas' });
     }
 
     console.log(`[LOGIN] Sucesso para usuário: ${username}`);

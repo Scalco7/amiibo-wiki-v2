@@ -7,7 +7,7 @@ import { AmiiboProvider } from './contexts/AmiiboContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename="/amiibo-wiki">
       <AmiiboProvider>
         <App />
       </AmiiboProvider>

@@ -8,6 +8,46 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const cache = require('../config/cache');
 
+// POST /api/auth/register
+router.post(
+  '/register',
+  [
+    body('username')
+      .isString()
+      .trim()
+      .notEmpty()
+      .withMessage('O nome de usuário é obrigatório.'),
+    body('password')
+      .isLength({ min: 6 })
+      .withMessage('A senha deve ter no mínimo 6 caracteres.'),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { username, password } = req.body;
+
+    try {
+      let user = await User.findOne({ username });
+      if (user) {
+        return res.status(400).json({ error: 'Usuário já existe' });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+
+      user = new User({ username, passwordHash });
+      await user.save();
+      res.status(201).json({ message: 'Usuário registrado com sucesso' });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Erro ao registrar usuário' });
+    }
+  }
+);
+
 // POST /api/auth/logout
 router.post('/logout', async (req, res) => {
   const authHeader = req.headers.authorization;

@@ -11,6 +11,7 @@ export default function Amiibo({ amiibo, onClick }) {
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
+                borderTop: `5px solid ${amiibo.game?.color || '#ccc'}`,
                 cursor: "pointer",
             }}
             onClick={() => onClick(amiibo)}

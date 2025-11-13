@@ -21,7 +21,12 @@ export default function AmiiboModal({ open, onClose, amiibo }) {
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle>{amiibo.name}</DialogTitle>
+      <DialogTitle sx={{ 
+        backgroundColor: amiibo.game?.color || 'primary.main',
+        color: 'white'
+      }}>
+        {amiibo.name}
+      </DialogTitle>
       <DialogContent dividers>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <StyleIcon fontSize="inherit" />

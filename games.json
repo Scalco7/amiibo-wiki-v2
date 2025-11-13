@@ -1,0 +1,61 @@
+[
+  { "name": "Super Mario Bros.", "color": "#E63946" },
+  { "name": "The Legend of Zelda", "color": "#2A9D8F" },
+  { "name": "Metroid", "color": "#F4A261" },
+  { "name": "Donkey Kong", "color": "#8B4513" },
+  { "name": "Kirby’s Adventure", "color": "#FFB6C1" },
+
+  { "name": "The Legend of Zelda: Breath of the Wild", "color": "#88C9BF" },
+  { "name": "Xenoblade Chronicles 3", "color": "#B80F0A" },
+  { "name": "Fire Emblem: Three Houses", "color": "#4B0082" },
+  { "name": "Pokémon Scarlet & Violet", "color": "#C71585" },
+  { "name": "Paper Mario: The Thousand-Year Door", "color": "#FFD166" },
+
+  { "name": "Dr. Mario", "color": "#FFD700" },
+  { "name": "Tetris DS", "color": "#00BFFF" },
+  { "name": "Captain Toad: Treasure Tracker", "color": "#F4A300" },
+  { "name": "Advance Wars 1+2: Re-Boot Camp", "color": "#FF4500" },
+  { "name": "Pushmo (Pullblox)", "color": "#FF69B4" },
+
+  { "name": "Mario Kart 8 Deluxe", "color": "#1E90FF" },
+  { "name": "F-Zero GX", "color": "#9400D3" },
+  { "name": "Excitebike", "color": "#FF6347" },
+  { "name": "Wave Race 64", "color": "#0096C7" },
+  { "name": "Diddy Kong Racing", "color": "#FF8C00" },
+
+  { "name": "Super Smash Bros. Ultimate", "color": "#C0C0C0" },
+  { "name": "ARMS", "color": "#FFD700" },
+  { "name": "Pokkén Tournament DX", "color": "#4B9CD3" },
+  { "name": "Punch-Out!!", "color": "#32CD32" },
+  { "name": "Urban Champion", "color": "#4682B4" },
+
+  { "name": "Wii Sports", "color": "#87CEFA" },
+  { "name": "Mario Golf: Super Rush", "color": "#228B22" },
+  { "name": "Mario Tennis Aces", "color": "#FF0000" },
+  { "name": "Nintendo Switch Sports", "color": "#00CED1" },
+  { "name": "Pilotwings Resort", "color": "#ADD8E6" },
+
+  { "name": "Animal Crossing: New Horizons", "color": "#A7C957" },
+  { "name": "Miitopia", "color": "#CBAACB" },
+  { "name": "Tomodachi Life", "color": "#FFA500" },
+  { "name": "Nintendogs + Cats", "color": "#D2B48C" },
+  { "name": "Happy Home Designer", "color": "#F5DEB3" },
+
+  { "name": "Luigi’s Mansion 3", "color": "#006400" },
+  { "name": "Eternal Darkness: Sanity’s Requiem", "color": "#191970" },
+  { "name": "Ghost Trick: Phantom Detective", "color": "#DA70D6" },
+  { "name": "Metroid Dread", "color": "#8B0000" },
+  { "name": "Fatal Frame: Maiden of Black Water", "color": "#2F4F4F" },
+
+  { "name": "Splatoon 3", "color": "#39FF14" },
+  { "name": "Star Fox 64", "color": "#4169E1" },
+  { "name": "Kid Icarus: Uprising", "color": "#F7DC6F" },
+  { "name": "Sin and Punishment: Star Successor", "color": "#00BFFF" },
+  { "name": "Bayonetta 3", "color": "#800080" },
+
+  { "name": "Snipperclips", "color": "#FFEB3B" },
+  { "name": "Good Job!", "color": "#FF9800" },
+  { "name": "BOXBOY! + BOXGIRL!", "color": "#C0C0C0" },
+  { "name": "Game Builder Garage", "color": "#F7B500" },
+  { "name": "Ring Fit Adventure", "color": "#FF4500" }
+]

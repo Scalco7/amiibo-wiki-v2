@@ -1,3 +1,10 @@
+
+const express = require('express');
+const router = express.Router();
+const Game = require('../models/Game');
+const { body, validationResult } = require('express-validator');
+const auth = require('../utils/authMiddleware');
+
 // GET /api/games?name= - Listar games com filtro por nome
 router.get(
   '/',
@@ -17,11 +24,6 @@ router.get(
     }
   }
 );
-const express = require('express');
-const router = express.Router();
-const Game = require('../models/Game');
-const { body, validationResult } = require('express-validator');
-const auth = require('../utils/authMiddleware');
 
 // POST /api/games - Cadastrar novo game
 router.post(

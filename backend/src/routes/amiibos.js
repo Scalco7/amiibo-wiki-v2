@@ -31,7 +31,7 @@ router.get(
       if (req.query.game) q.game = req.query.game;
       if (req.query.type) q.type = req.query.type;
 
-      const amiibos = await Amiibo.find(q).sort({ createdAt: -1 }).limit(200);
+      const amiibos = await Amiibo.find(q).populate('game').sort({ createdAt: -1 }).limit(200);
 
       // salva no cache por 2 minutos
       await redis.set(cacheKey, JSON.stringify(amiibos), 'EX', 120);
@@ -51,8 +51,8 @@ router.post(
   auth,
   [
     body('name').isString().trim().notEmpty(),
-    body('type').isIn(['card', 'figure', 'other']),
-    body('game').isString().trim().notEmpty(),
+    body('type').isIn(['Card', 'Figure', 'Band']),
+    body('game').isMongoId().withMessage('O ID do jogo é inválido.'),
     body('releaseDateJapan').optional().isISO8601(),
     body('releaseDateBrazil').optional().isISO8601(),
   ],
@@ -74,12 +74,13 @@ router.post(
       });
 
       await newAmiibo.save();
+      await newAmiibo.populate('game');
 
       // 🔹 Invalida o cache (para manter os dados consistentes)
-      await redis.flushAll();
+      // await redis.flushAll();
 
       console.log(`[AMIIBO POST] Novo amiibo criado por usuário: ${req.user?.username} | Dados: ${JSON.stringify({ name, type, game })}`);
-      res.status(201).json(newAmiibo);
+      res.status(201).json(newAmiibo); // Agora retorna o amiibo com o jogo populado
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Failed to create amiibo' });

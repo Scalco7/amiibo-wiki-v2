@@ -20,8 +20,9 @@ router.get(
       const cacheKey = 'amiibos:' + JSON.stringify(req.query);
       const cached = await redis.get(cacheKey);
 
+
       if (cached) {
-        console.log('✅ Cache hit');
+        console.log(`[AMIIBO BUSCA] Cache hit para query: ${JSON.stringify(req.query)} por usuário: ${req.user?.username}`);
         return res.json(JSON.parse(cached));
       }
 
@@ -35,6 +36,7 @@ router.get(
       // salva no cache por 2 minutos
       await redis.set(cacheKey, JSON.stringify(amiibos), 'EX', 120);
 
+      console.log(`[AMIIBO BUSCA] Busca realizada por usuário: ${req.user?.username} | Filtros: ${JSON.stringify(q)}`);
       res.json(amiibos);
     } catch (err) {
       console.error(err);
@@ -76,6 +78,7 @@ router.post(
       // 🔹 Invalida o cache (para manter os dados consistentes)
       await redis.flushAll();
 
+      console.log(`[AMIIBO POST] Novo amiibo criado por usuário: ${req.user?.username} | Dados: ${JSON.stringify({ name, type, game })}`);
       res.status(201).json(newAmiibo);
     } catch (err) {
       console.error(err);

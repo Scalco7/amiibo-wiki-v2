@@ -1,4 +1,3 @@
-// scripts/createUser.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const User = require('../src/models/User');

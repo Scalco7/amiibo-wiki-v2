@@ -28,6 +28,7 @@ app.use(limiter);
 // Rotas
 app.use('/api/auth', require('./src/routes/auth'));
 app.use('/api/amiibos', require('./src/routes/amiibos'));
+app.use('/api/games', require('./src/routes/games'));
 
 // error handler & logging (simplified)
 app.use((err, req, res, next) => {

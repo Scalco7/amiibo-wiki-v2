@@ -11,19 +11,34 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { AmiiboApi } from "../api/amiibo-api";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const api = new AmiiboApi();
 
-  const handleSubmit = (event) => {
-    console.log("aquiii")
-    console.log(email, password)
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    if (email && password) {
-      localStorage.setItem("isLoggedIn", "true");
-      navigate("/amiibo-wiki");
+    setError("");
+
+    if (!email || !password) {
+      setError("Email e senha são obrigatórios.");
+      return;
+    }
+
+    try {
+      const result = await api.login(email, password);
+      if (result.token) {
+        localStorage.setItem("token", result.token);
+        navigate("/amiibo-wiki");
+      } else {
+        setError(result.error || "Credenciais inválidas.");
+      }
+    } catch (err) {
+      setError("Falha na comunicação com o servidor. Tente novamente.");
     }
   };
 
@@ -68,6 +83,7 @@ export default function LoginPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <Typography color="error" variant="body2" sx={{ mt: 2 }}>{error}</Typography>}
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Entrar
           </Button>

@@ -11,6 +11,7 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { AmiiboApi } from "../api/amiibo-api";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -18,8 +19,9 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const api = new AmiiboApi();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     setError("");
 
@@ -32,10 +34,18 @@ export default function RegisterPage() {
       setError("As senhas não coincidem.");
       return;
     }
-    console.log("Novo usuário registrado:", { email });
 
-    alert("Conta criada com sucesso! Você será redirecionado para o login.");
-    navigate("/login");
+    try {
+      const result = await api.registerUser(email, password);
+      if (result.message) {
+        alert("Conta criada com sucesso! Você será redirecionado para o login.");
+        navigate("/login");
+      } else {
+        setError(result.error || "Ocorreu um erro ao criar a conta.");
+      }
+    } catch (err) {
+      setError("Falha na comunicação com o servidor. Tente novamente mais tarde.");
+    }
   };
 
   return (

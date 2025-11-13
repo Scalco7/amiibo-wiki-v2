@@ -8,21 +8,27 @@ const AmiiboContext = createContext();
 
 export const AmiiboProvider = ({ children }) => {
     const [amiibos, setAmiibos] = useState([]);
+    const [allAmiibos, setAllAmiibos] = useState([]);
     const [selectedAmiibo, setSelectedAmiibo] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    let allAmiibos = []
 
     useEffect(() => {
         fetchAmiibos();
     }, []);
 
-    const fetchAmiibos = async () => {
+    const fetchAmiibos = async (filters = {}) => {
         try {
             setLoading(true);
-            const data = (await amiiboApi.getAmiibos()).slice(0, 100);
+            setError(null);
+            const data = await amiiboApi.getAmiibos(filters);
+            if (data.error) {
+                throw new Error(data.error);
+            }
             setAmiibos(data);
-            allAmiibos = data;
+            if (Object.keys(filters).length === 0) {
+                setAllAmiibos(data);
+            }
         } catch (e) {
             setError(e);
         } finally {
@@ -30,18 +36,29 @@ export const AmiiboProvider = ({ children }) => {
         }
     };
 
-    const searchAmiibos = async (searchValue) => {
+    const createAmiibo = async (amiiboData) => {
         try {
             setLoading(true);
-            const data = (await amiiboApi.searchAmiibos(searchValue)).slice(0, 100);
-            setAmiibos(data);
+            setError(null);
+            const newAmiibo = await amiiboApi.createAmiibo(amiiboData);
+            if (newAmiibo.error) {
+                throw new Error(newAmiibo.error);
+            }
+            // Atualiza a lista de amiibos com o novo item
+            setAmiibos(prev => [newAmiibo, ...prev]);
+            setAllAmiibos(prev => [newAmiibo, ...prev]);
+            return newAmiibo;
         } catch (e) {
-            console.log(e)
             setError(e);
+            return null;
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    const searchAmiibos = async (searchValue) => {
+        await fetchAmiibos({ name: searchValue });
+    };
 
     const resetSearch = () => {
         setAmiibos(allAmiibos);
@@ -52,7 +69,18 @@ export const AmiiboProvider = ({ children }) => {
     };
 
     return (
-        <AmiiboContext.Provider value={{ amiibos, selectedAmiibo, selectAmiibo, searchAmiibos, resetSearch, loading, error }}>
+        <AmiiboContext.Provider 
+            value={{ 
+                amiibos, 
+                selectedAmiibo, 
+                loading, 
+                error,
+                selectAmiibo, 
+                searchAmiibos, 
+                resetSearch, 
+                createAmiibo 
+            }}
+        >
             {children}
         </AmiiboContext.Provider>
     );

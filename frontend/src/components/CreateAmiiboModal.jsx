@@ -12,14 +12,19 @@ import {
   MenuItem,
 } from "@mui/material";
 import { createPortal } from "react-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AmiiboTypeEnum } from "../types/amiibo-type.enum";
 
-export default function CreateAmiiboModal({ open, onClose, onCreate }) {
+export default function CreateAmiiboModal({
+  open,
+  onClose,
+  onCreate,
+  gamesList,
+}) {
   const [amiiboData, setAmiiboData] = useState({
     name: "",
     type: "",
-    gameId: "",
+    game: "",
     releaseDateJapan: "",
     releaseDateBrazil: "",
   });
@@ -32,7 +37,7 @@ export default function CreateAmiiboModal({ open, onClose, onCreate }) {
     setAmiiboData({
       name: "",
       type: "",
-      gameId: "",
+      game: "",
       releaseDateJapan: "",
       releaseDateBrazil: "",
     });
@@ -40,7 +45,6 @@ export default function CreateAmiiboModal({ open, onClose, onCreate }) {
 
   const handleSubmit = () => {
     onCreate(amiiboData);
-    onClose();
   };
 
   const handleClose = () => {
@@ -79,13 +83,12 @@ export default function CreateAmiiboModal({ open, onClose, onCreate }) {
             <InputLabel>Jogo</InputLabel>
             <Select
               label="Jogo"
-              value={amiiboData.gameId}
-              onChange={handleChange("gameId")}
+              value={amiiboData.game}
+              onChange={handleChange("game")}
             >
-              <MenuItem value="mario">Mario</MenuItem>
-              <MenuItem value="sonic">Sonic</MenuItem>
-              <MenuItem value="zelda">Zelda</MenuItem>
-              <MenuItem value="pokemon">Pokémon</MenuItem>
+              {gamesList.map((g) => (
+                <MenuItem value={g._id}>{g.name}</MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -116,7 +119,7 @@ export default function CreateAmiiboModal({ open, onClose, onCreate }) {
         <Button onClick={handleClose} variant="contained" color="primary">
           Fechar
         </Button>
-        <Button onClick={onCreate} variant="contained" color="primary">
+        <Button onClick={handleSubmit} variant="contained" color="primary">
           Criar
         </Button>
       </DialogActions>

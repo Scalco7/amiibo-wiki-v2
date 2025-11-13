@@ -1,19 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAmiibo } from "../contexts/AmiiboContext";
 import AmiiboList from "../components/AmiiboList";
 import CreateAmiiboModal from "../components/CreateAmiiboModal";
 import { Button, TextField } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { AmiiboApi } from "../api/amiibo-api";
 
 export default function HomePage() {
   const [searchValue, setSearchValue] = useState("");
   const [searchInputError, setSearchInputError] = useState(null);
   const [crateIsOpen, setCreateIsOpen] = useState(false);
-  const { searchAmiibos, loading } = useAmiibo();
+  const [gamesList, setGamesList] = useState([]);
+  const { searchAmiibos, createAmiibo } = useAmiibo();
   const navigate = useNavigate();
+
+  const amiiboApi = new AmiiboApi();
+
+  useEffect(() => {
+    fetchGames();
+  }, []);
+
+  async function fetchGames() {
+    const games = await amiiboApi.getGames();
+    console.log(games);
+    setGamesList(games);
+  }
 
   function onChangeTextField(event) {
     setSearchValue(event.target.value);
@@ -34,6 +48,11 @@ export default function HomePage() {
 
   function handleClose() {
     setCreateIsOpen(false);
+  }
+
+  async function handleCreate(amiiboData) {
+    await createAmiibo(amiiboData);
+    handleClose();
   }
 
   function handleLogout() {
@@ -93,7 +112,12 @@ export default function HomePage() {
         </Button>
       </div>
       <AmiiboList />
-      <CreateAmiiboModal open={crateIsOpen} onClose={handleClose} />
+      <CreateAmiiboModal
+        open={crateIsOpen}
+        onClose={handleClose}
+        onCreate={handleCreate}
+        gamesList={gamesList}
+      />
     </main>
   );
 }

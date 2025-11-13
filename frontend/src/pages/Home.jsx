@@ -25,7 +25,6 @@ export default function HomePage() {
 
   async function fetchGames() {
     const games = await amiiboApi.getGames();
-    console.log(games);
     setGamesList(games);
   }
 

@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import VideogameAssetIcon from '@mui/icons-material/VideogameAsset';
 import StyleIcon from '@mui/icons-material/Style';
+import { formatDate } from "../utils/formatDate";
 
 export default function AmiiboModal({ open, onClose, amiibo }) {
   if (!open || !amiibo) return null;
@@ -28,7 +29,7 @@ export default function AmiiboModal({ open, onClose, amiibo }) {
         </div>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <VideogameAssetIcon fontSize="inherit" />
-          <Typography><strong>Jogo:</strong> {amiibo.gameSeries}</Typography>
+          <Typography><strong>Jogo:</strong> {amiibo.game.name}</Typography>
         </div>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <img
@@ -41,7 +42,7 @@ export default function AmiiboModal({ open, onClose, amiibo }) {
               objectFit: "contain",
             }}
           />
-          <Typography><strong>Lançamento (NA):</strong> {amiibo.release?.na ?? "N/A"}</Typography>
+          <Typography><strong>Lançamento (BR):</strong> {formatDate(amiibo.releaseDateBrazil)}</Typography>
         </div>
         <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <img
@@ -54,7 +55,7 @@ export default function AmiiboModal({ open, onClose, amiibo }) {
               objectFit: "contain",
             }}
           />
-          <Typography><strong>Lançamento (JP):</strong> {amiibo.release?.jp ?? "N/A"}</Typography>
+          <Typography><strong>Lançamento (JP):</strong> {formatDate(amiibo.releaseDateJapan)}</Typography>
         </div>
       </DialogContent>
       <DialogActions>

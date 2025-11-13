@@ -1,4 +1,13 @@
 export class AmiiboApi {
+    #parseAmiiboDates(amiibo) {
+        if (!amiibo || amiibo.error) return amiibo;
+        return {
+            ...amiibo,
+            releaseDateJapan: amiibo.releaseDateJapan ? new Date(amiibo.releaseDateJapan) : null,
+            releaseDateBrazil: amiibo.releaseDateBrazil ? new Date(amiibo.releaseDateBrazil) : null,
+        };
+    }
+
     apiUrl = 'http://localhost:4000';
 
     async getAmiibos(filters = {}) {
@@ -18,7 +27,12 @@ export class AmiiboApi {
             }
         });
 
-        return await response.json();
+        const data = await response.json();
+        if (Array.isArray(data)) {
+            return data.map(this.#parseAmiiboDates);
+        }
+
+        return data; // Retorna o objeto de erro se não for um array
     }
 
     async createAmiibo(amiiboData) {
@@ -36,7 +50,8 @@ export class AmiiboApi {
             body: JSON.stringify(amiiboData)
         });
 
-        return await response.json();
+        const newAmiibo = await response.json();
+        return this.#parseAmiiboDates(newAmiibo);
     }
 
     async getGames(filters = {}) {

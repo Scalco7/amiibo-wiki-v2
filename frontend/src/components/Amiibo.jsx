@@ -25,7 +25,7 @@ export default function Amiibo({ amiibo, onClick }) {
                 <div style={{display: "flex", gap: "10px", alignItems: "center"}}>
                     <VideogameAssetIcon fontSize="inherit"/>
                     <Typography variant="body2" color="text.secondary">
-                        Série: {amiibo.amiiboSeries}
+                        Jogo: {amiibo.game.name}
                     </Typography>
                 </div>
             </CardContent>

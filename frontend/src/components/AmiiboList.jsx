@@ -28,7 +28,7 @@ export default function AmiiboList() {
     <>
       <Grid container spacing={3} justifyContent="center">
         {amiibos.map((amiibo) => (
-          <Amiibo key={amiibo.head + amiibo.tail} amiibo={amiibo} onClick={(a) => handleOpen(a)} />
+          <Amiibo key={amiibo._id} amiibo={amiibo} onClick={(a) => handleOpen(a)} />
         ))}
       </Grid>
 

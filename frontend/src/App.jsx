@@ -5,10 +5,12 @@ import "./App.css";
 import { useState } from "react";
 import { useAmiibo } from "./contexts/AmiiboContext";
 import AmiiboList from "./components/AmiiboList";
+import CreateAmiiboModal from "./components/CreateAmiiboModal";
 
 function App() {
   const [searchValue, setSearchValue] = useState("");
   const [searchInputError, setSearchInputError] = useState(null);
+  const [crateIsOpen, setCreateIsOpen] = useState(false)
   const { searchAmiibos, loading } = useAmiibo();
 
   function onChangeTextField(event) {
@@ -25,7 +27,11 @@ function App() {
   }
 
   function onClickAddButton() {
+    setCreateIsOpen(true)
+  }
 
+  function handleClose() {
+    setCreateIsOpen(false)
   }
 
   return (
@@ -68,6 +74,7 @@ function App() {
         </Button>
       </div>
       <AmiiboList />
+      <CreateAmiiboModal open={crateIsOpen} onClose={handleClose}/>
     </main>
   );
 }

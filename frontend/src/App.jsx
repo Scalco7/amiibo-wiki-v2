@@ -1,81 +1,23 @@
-import { Button, TextField } from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import AddIcon from '@mui/icons-material/Add';
 import "./App.css";
-import { useState } from "react";
-import { useAmiibo } from "./contexts/AmiiboContext";
-import AmiiboList from "./components/AmiiboList";
-import CreateAmiiboModal from "./components/CreateAmiiboModal";
+import { Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/Home";
+import LoginPage from "./pages/Login";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const [searchValue, setSearchValue] = useState("");
-  const [searchInputError, setSearchInputError] = useState(null);
-  const [crateIsOpen, setCreateIsOpen] = useState(false)
-  const { searchAmiibos, loading } = useAmiibo();
-
-  function onChangeTextField(event) {
-    setSearchValue(event.target.value);
-    if (event.target.value.trim()) setSearchInputError(null);
-  }
-
-  function onClickSearchButton() {
-    if (!searchValue.trim()) {
-      setSearchInputError("Digite um valor para pesquisar");
-      return;
-    }
-    searchAmiibos(searchValue);
-  }
-
-  function onClickAddButton() {
-    setCreateIsOpen(true)
-  }
-
-  function handleClose() {
-    setCreateIsOpen(false)
-  }
-
   return (
-    <main>
-      <img src="amiibo-wiki/amibo-banner.png" alt="banner" />
-      <div className="search-section">
-        <div className="search-input">
-          <TextField
-            id="text-input"
-            label="Pesquisar"
-            variant="outlined"
-            value={searchValue}
-            error={!!searchInputError}
-            helperText={searchInputError}
-            onChange={onChangeTextField}
-            fullWidth
-          />
-        </div>
-
-        <Button
-          id="search-button"
-          variant="outlined"
-          size="large"
-          style={{ padding: 0, height: 56, fontSize: 30 }}
-          onClick={onClickSearchButton}
-          disableElevation
-        >
-          <SearchIcon fontSize="inherit" />
-        </Button>
-
-        <Button
-          id="add-button"
-          variant="contained"
-          size="large"
-          style={{ padding: 0, height: 56, fontSize: 30 }}
-          onClick={onClickAddButton}
-          disableElevation
-        >
-          <AddIcon fontSize="inherit" />
-        </Button>
-      </div>
-      <AmiiboList />
-      <CreateAmiiboModal open={crateIsOpen} onClose={handleClose}/>
-    </main>
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <HomePage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
 

@@ -1,13 +1,16 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import { AmiiboProvider } from './contexts/AmiiboContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <AmiiboProvider>
-      <App />
-    </AmiiboProvider>
+    <BrowserRouter>
+      <AmiiboProvider>
+        <App />
+      </AmiiboProvider>
+    </BrowserRouter>
   </StrictMode>,
 )

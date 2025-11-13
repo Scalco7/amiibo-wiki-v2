@@ -13,10 +13,6 @@ export const AmiiboProvider = ({ children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        fetchAmiibos();
-    }, []);
-
     const fetchAmiibos = async (filters = {}) => {
         try {
             setLoading(true);

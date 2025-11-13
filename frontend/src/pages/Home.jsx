@@ -21,6 +21,7 @@ export default function HomePage() {
 
   useEffect(() => {
     fetchGames();
+    searchAmiibos();
   }, []);
 
   async function fetchGames() {
@@ -55,7 +56,7 @@ export default function HomePage() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("token");
     navigate("/login");
   }
 

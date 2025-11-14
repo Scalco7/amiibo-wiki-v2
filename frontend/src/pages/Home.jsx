@@ -51,7 +51,7 @@ export default function HomePage() {
   }
 
   function handleLogout() {
-    localStorage.removeItem("token");
+    amiiboApi.logout()
     navigate("/login");
   }
 

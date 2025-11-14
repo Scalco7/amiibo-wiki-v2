@@ -95,4 +95,23 @@ export class AmiiboApi {
         });
         return await response.json();
     }
+
+    async logout() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            return { message: 'Nenhum usuário logado.' };
+        }
+
+        localStorage.removeItem('token');
+
+        const response = await fetch(`${this.apiUrl}/api/auth/logout`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        return await response.json();
+    }
 }

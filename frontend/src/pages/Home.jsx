@@ -14,7 +14,7 @@ export default function HomePage() {
   const [searchInputError, setSearchInputError] = useState(null);
   const [crateIsOpen, setCreateIsOpen] = useState(false);
   const [gamesList, setGamesList] = useState([]);
-  const { searchAmiibos, createAmiibo } = useAmiibo();
+  const { searchAmiibos } = useAmiibo();
   const navigate = useNavigate();
 
   const amiiboApi = new AmiiboApi();
@@ -48,11 +48,6 @@ export default function HomePage() {
 
   function handleClose() {
     setCreateIsOpen(false);
-  }
-
-  async function handleCreate(amiiboData) {
-    await createAmiibo(amiiboData);
-    handleClose();
   }
 
   function handleLogout() {
@@ -115,7 +110,6 @@ export default function HomePage() {
       <CreateAmiiboModal
         open={crateIsOpen}
         onClose={handleClose}
-        onCreate={handleCreate}
         gamesList={gamesList}
       />
     </main>

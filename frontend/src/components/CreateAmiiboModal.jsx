@@ -10,17 +10,16 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Alert,
 } from "@mui/material";
 import { createPortal } from "react-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AmiiboTypeEnum } from "../types/amiibo-type.enum";
+import { useAmiibo } from "../contexts/AmiiboContext";
 
-export default function CreateAmiiboModal({
-  open,
-  onClose,
-  onCreate,
-  gamesList,
-}) {
+export default function CreateAmiiboModal({ open, onClose, gamesList }) {
+  const { createAmiibo, error, clearError } = useAmiibo();
+
   const [amiiboData, setAmiiboData] = useState({
     name: "",
     type: "",
@@ -30,6 +29,7 @@ export default function CreateAmiiboModal({
   });
 
   const handleChange = (field) => (event) => {
+    if (error) clearError();
     setAmiiboData({ ...amiiboData, [field]: event.target.value });
   };
 
@@ -43,11 +43,15 @@ export default function CreateAmiiboModal({
     });
   };
 
-  const handleSubmit = () => {
-    onCreate(amiiboData);
-  };
+  const handleCreate = async () => {
+    const newAmiibo = await createAmiibo(amiiboData);
+    if (newAmiibo) {
+      handleClose();
+    }
+  }
 
   const handleClose = () => {
+    if (error) clearError();
     resetForm();
     onClose();
   };
@@ -57,6 +61,9 @@ export default function CreateAmiiboModal({
       <DialogTitle>Adicionar Amiibo a sua coleção</DialogTitle>
       <DialogContent dividers>
         <Stack spacing={3} sx={{ mt: 1 }}>
+          {error && (
+            <Alert severity="error">{error.message}</Alert>
+          )}
           <TextField
             label="Nome"
             variant="outlined"
@@ -119,7 +126,7 @@ export default function CreateAmiiboModal({
         <Button onClick={handleClose} variant="contained" color="primary">
           Fechar
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
+        <Button onClick={handleCreate} variant="contained" color="primary">
           Criar
         </Button>
       </DialogActions>

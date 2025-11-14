@@ -59,11 +59,11 @@ router.post(
   '/',
   auth,
   [
-    body('name').isString().trim().notEmpty(),
-    body('type').isIn(['Card', 'Figure', 'Band']),
+    body('name').isString().trim().notEmpty().withMessage('Nome inválido.'),
+    body('type').isIn(['Card', 'Figure', 'Band']).withMessage('O tipo de Amiibo deve ser: Card, Figure ou Band.'),
     body('game').isMongoId().withMessage('O ID do jogo é inválido.'),
-    body('releaseDateJapan').optional().isISO8601(),
-    body('releaseDateBrazil').optional().isISO8601(),
+    body('releaseDateJapan').optional().isISO8601().withMessage('Data de lançamento no japão inválida.'),
+    body('releaseDateBrazil').optional().isISO8601().withMessage('Data de lançamento no Brasil inválida.'),
   ],
   async (req, res) => {
     const errors = validationResult(req);

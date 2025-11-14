@@ -31,7 +31,8 @@ router.get(
         return res.json(JSON.parse(cached));
       }
 
-      const q = {};
+
+      const q = { user: req.user.userId };
       if (req.query.name) q.name = { $regex: new RegExp(req.query.name, 'i') };
       if (req.query.game) q.game = req.query.game;
       if (req.query.type) q.type = req.query.type;

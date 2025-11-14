@@ -17,9 +17,14 @@ router.get(
   ],
   async (req, res) => {
     try {
-      const cacheKey = 'amiibos:' + JSON.stringify(req.query);
-      const cached = await redis.get(cacheKey);
 
+      const cacheKey = 'amiibos:' + JSON.stringify(req.query);
+      let cached = null;
+      try {
+        cached = await redis.get(cacheKey);
+      } catch (cacheErr) {
+        console.warn(`[CACHE ERRO] Falha ao acessar cache: ${cacheErr.message}`);
+      }
 
       if (cached) {
         console.log(`[AMIIBO BUSCA] Cache hit para query: ${JSON.stringify(req.query)} por usuário: ${req.user?.username}`);
@@ -33,8 +38,12 @@ router.get(
 
       const amiibos = await Amiibo.find(q).populate('game').sort({ createdAt: -1 }).limit(200);
 
-      // salva no cache por 2 minutos
-      await redis.set(cacheKey, JSON.stringify(amiibos), 'EX', 120);
+
+      try {
+        await redis.set(cacheKey, JSON.stringify(amiibos), 'EX', 120);
+      } catch (cacheErr) {
+        console.warn(`[CACHE ERRO] Falha ao salvar no cache: ${cacheErr.message}`);
+      }
 
       console.log(`[AMIIBO BUSCA] Busca realizada por usuário: ${req.user?.username} | Filtros: ${JSON.stringify(q)}`);
       res.json(amiibos);
@@ -71,16 +80,20 @@ router.post(
         game,
         releaseDateJapan: releaseDateJapan || null,
         releaseDateBrazil: releaseDateBrazil || null,
+        user: req.user.userId,
       });
 
       await newAmiibo.save();
       await newAmiibo.populate('game');
 
-      // 🔹 Invalida o cache (para manter os dados consistentes)
-      // await redis.flushAll();
+      try {
+         await redis.flushAll();
+      } catch (cacheErr) {
+        console.warn(`[CACHE ERRO] Falha ao invalidar cache: ${cacheErr.message}`);
+      }
 
       console.log(`[AMIIBO POST] Novo amiibo criado por usuário: ${req.user?.username} | Dados: ${JSON.stringify({ name, type, game })}`);
-      res.status(201).json(newAmiibo); // Agora retorna o amiibo com o jogo populado
+      res.status(201).json(newAmiibo);
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Failed to create amiibo' });

@@ -7,6 +7,7 @@ const AmiiboSchema = new mongoose.Schema({
   game: { type: mongoose.Schema.Types.ObjectId, ref: 'Game', required: true },
   releaseDateJapan: { type: Date },
   releaseDateBrazil: { type: Date },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Amiibo', AmiiboSchema);

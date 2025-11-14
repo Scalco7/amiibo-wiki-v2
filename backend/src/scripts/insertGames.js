@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
-const Game = require('../src/models/Game');
+const Game = require('../models/Game');
 require('dotenv').config();
-const connectDB = require('../src/config/db');
+const connectDB = require('../config/db');
 
 const games = [
   { name: 'Super Mario Bros' },

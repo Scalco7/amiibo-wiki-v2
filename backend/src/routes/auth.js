@@ -1,5 +1,3 @@
-
-// src/routes/auth.js
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
@@ -8,7 +6,6 @@ const jwt = require('jsonwebtoken');
 const { body, validationResult } = require('express-validator');
 const cache = require('../config/cache');
 
-// POST /api/auth/register
 router.post(
   '/register',
   [
@@ -48,7 +45,6 @@ router.post(
   }
 );
 
-// POST /api/auth/logout
 router.post('/logout', async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: 'No token' });
@@ -56,7 +52,6 @@ router.post('/logout', async (req, res) => {
   if (parts.length !== 2 || parts[0] !== 'Bearer') return res.status(401).json({ error: 'Invalid token format' });
   const token = parts[1];
   try {
-    // Decodifica o token para pegar o tempo de expiração
     const decoded = jwt.decode(token);
     if (!decoded || !decoded.exp) return res.status(400).json({ error: 'Invalid token' });
     const ttl = decoded.exp - Math.floor(Date.now() / 1000);
@@ -69,7 +64,6 @@ router.post('/logout', async (req, res) => {
   }
 });
 
-// POST /api/auth/login
 router.post('/login', 
   body('username').isString().trim().notEmpty(),
   body('password').isString().notEmpty(),

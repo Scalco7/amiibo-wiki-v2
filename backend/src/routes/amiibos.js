@@ -1,4 +1,3 @@
-// src/routes/amiibos.js
 const express = require('express');
 const router = express.Router();
 const Amiibo = require('../models/Amiibo');
@@ -6,7 +5,6 @@ const { body, query, validationResult } = require('express-validator');
 const auth = require('../utils/authMiddleware');
 const redis = require('../config/cache');
 
-// 🔹 GET /api/amiibos?name=&game=&type=
 router.get(
   '/',
   auth,
@@ -17,7 +15,6 @@ router.get(
   ],
   async (req, res) => {
     try {
-
       const cacheKey = 'amiibos:' + JSON.stringify(req.query);
       let cached = null;
       try {
@@ -25,27 +22,20 @@ router.get(
       } catch (cacheErr) {
         console.warn(`[CACHE ERRO] Falha ao acessar cache: ${cacheErr.message}`);
       }
-
       if (cached) {
         console.log(`[AMIIBO BUSCA] Cache hit para query: ${JSON.stringify(req.query)} por usuário: ${req.user?.username}`);
         return res.json(JSON.parse(cached));
       }
-
-
       const q = { user: req.user.userId };
       if (req.query.name) q.name = { $regex: new RegExp(req.query.name, 'i') };
       if (req.query.game) q.game = req.query.game;
       if (req.query.type) q.type = req.query.type;
-
       const amiibos = await Amiibo.find(q).populate('game').sort({ createdAt: -1 }).limit(200);
-
-
       try {
         await redis.set(cacheKey, JSON.stringify(amiibos), 'EX', 120);
       } catch (cacheErr) {
         console.warn(`[CACHE ERRO] Falha ao salvar no cache: ${cacheErr.message}`);
       }
-
       console.log(`[AMIIBO BUSCA] Busca realizada por usuário: ${req.user?.username} | Filtros: ${JSON.stringify(q)}`);
       res.json(amiibos);
     } catch (err) {
@@ -55,7 +45,6 @@ router.get(
   }
 );
 
-// 🔹 POST /api/amiibos
 router.post(
   '/',
   auth,
@@ -71,9 +60,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { name, type, game, releaseDateJapan, releaseDateBrazil } = req.body;
-
     try {
       const newAmiibo = new Amiibo({
         name,
@@ -83,16 +70,13 @@ router.post(
         releaseDateBrazil: releaseDateBrazil || null,
         user: req.user.userId,
       });
-
       await newAmiibo.save();
       await newAmiibo.populate('game');
-
       try {
          await redis.flushAll();
       } catch (cacheErr) {
         console.warn(`[CACHE ERRO] Falha ao invalidar cache: ${cacheErr.message}`);
       }
-
       console.log(`[AMIIBO POST] Novo amiibo criado por usuário: ${req.user?.username} | Dados: ${JSON.stringify({ name, type, game })}`);
       res.status(201).json(newAmiibo);
     } catch (err) {

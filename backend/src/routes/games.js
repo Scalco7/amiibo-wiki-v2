@@ -1,11 +1,9 @@
-
 const express = require('express');
 const router = express.Router();
 const Game = require('../models/Game');
 const { body, validationResult } = require('express-validator');
 const auth = require('../utils/authMiddleware');
 
-// GET /api/games?name= - Listar games com filtro por nome
 router.get(
   '/',
   auth,
@@ -25,13 +23,11 @@ router.get(
   }
 );
 
-// POST /api/games - Cadastrar novo game
 router.post(
   '/',
   auth,
   [
     body('name').isString().trim().notEmpty(),
-    // Adicione outros validadores se necessário
   ],
   async (req, res) => {
     const errors = validationResult(req);

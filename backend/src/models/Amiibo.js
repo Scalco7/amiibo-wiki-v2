@@ -1,4 +1,3 @@
-// src/models/Amiibo.js
 const mongoose = require('mongoose');
 
 const AmiiboSchema = new mongoose.Schema({

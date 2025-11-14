@@ -1,9 +1,8 @@
-// src/models/User.js
 const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },
-  passwordHash: { type: String, required: true }, // bcrypt hashed
+  passwordHash: { type: String, required: true },
   role: { type: String, enum: ['admin','user'], default: 'user' },
 }, { timestamps: true });
 

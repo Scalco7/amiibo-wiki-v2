@@ -1,11 +1,9 @@
-// src/utils/validators.js
-
 import validator from "validator";
 
 /**
  * Valida dados de login
- * @param {Object} data - { email, password }
- * @returns {Object} { valid: boolean, errors: object }
+ * @param {Object} data -
+ * @returns {Object} 
  */
 export function validateLogin(data) {
   const errors = {};
@@ -25,9 +23,8 @@ export function validateLogin(data) {
 }
 
 /**
- * Valida dados de Amiibo
- * @param {Object} data - { name, type, game, releaseDateJapan, releaseDateBrazil }
- * @returns {Object} { valid: boolean, errors: object }
+ * @param {Object} data
+ * @returns {Object}
  */
 export function validateAmiibo(data) {
   const errors = {};

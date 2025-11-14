@@ -1,4 +1,3 @@
-// src/config/cache.js
 let redisAvailable = false;
 let redisClient = null;
 
